@@ -15,7 +15,7 @@ class LocationInput extends StatefulWidget {
 }
 
 class _LocationInputState extends State<LocationInput> {
-  late String _previewImageUrl;
+  String? _previewImageUrl;
 
   void _showPreview(double lat, double lng) {
     final staticMapImageUrl = LocationHelper.generateLocationPreviewImage(
@@ -65,12 +65,12 @@ class _LocationInputState extends State<LocationInput> {
             border: Border.all(width: 1, color: Colors.grey),
           ),
           child: _previewImageUrl == null
-              ? Text(
+              ? const Text(
                   'No Location Chosen',
                   textAlign: TextAlign.center,
                 )
               : Image.network(
-                  _previewImageUrl,
+                  _previewImageUrl as String,
                   fit: BoxFit.cover,
                   width: double.infinity,
                 ),
@@ -79,19 +79,19 @@ class _LocationInputState extends State<LocationInput> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             TextButton.icon(
-              icon: Icon(
+              icon: const Icon(
                 Icons.location_on,
               ),
-              label: Text('Current Location'),
+              label: const Text('Current Location'),
               style: TextButton.styleFrom(
                   textStyle: TextStyle(color: Theme.of(context).primaryColor)),
               onPressed: _getCurrentUserLocation,
             ),
             TextButton.icon(
-              icon: Icon(
+              icon: const Icon(
                 Icons.map,
               ),
-              label: Text('Select on Map'),
+              label: const Text('Select on Map'),
               style: TextButton.styleFrom(
                   textStyle: TextStyle(color: Theme.of(context).primaryColor)),
               onPressed: _selectOnMap,

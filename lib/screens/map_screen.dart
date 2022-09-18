@@ -30,11 +30,11 @@ class _MapScreenState extends State<MapScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Your Map'),
+        title: const Text('Your Map'),
         actions: <Widget>[
           if (widget.isSelecting)
             IconButton(
-              icon: Icon(Icons.check),
+              icon: const Icon(Icons.check),
               onPressed: _pickedLocation == null
                   ? null
                   : () {
@@ -53,10 +53,10 @@ class _MapScreenState extends State<MapScreen> {
         ),
         onTap: widget.isSelecting ? _selectLocation : null,
         markers: (_pickedLocation == null && widget.isSelecting)
-            ? <Marker>[].toSet()
+            ? <Marker>{}
             : {
                 Marker(
-                  markerId: MarkerId('m1'),
+                  markerId: const MarkerId('m1'),
                   position: _pickedLocation ??
                       LatLng(
                         widget.initialLocation.latitude,
