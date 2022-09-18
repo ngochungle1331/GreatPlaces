@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as path;
-import 'package:path_provider/path_provider.dart' as syspath;
+import 'package:path_provider/path_provider.dart' as syspaths;
 
 class ImageInput extends StatefulWidget {
   final Function onSelectImage;
@@ -11,11 +11,11 @@ class ImageInput extends StatefulWidget {
   ImageInput(this.onSelectImage);
 
   @override
-  State<ImageInput> createState() => _ImageInputState();
+  _ImageInputState createState() => _ImageInputState();
 }
 
 class _ImageInputState extends State<ImageInput> {
-  File? _storeImage;
+  File? _storedImage;
 
   Future<void> _takePicture() async {
     final picker = ImagePicker();
@@ -27,10 +27,9 @@ class _ImageInputState extends State<ImageInput> {
     }
 
     setState(() {
-      _storeImage = File(imageFile.path);
+      _storedImage = File(imageFile.path);
     });
-
-    final appDir = await syspath.getApplicationDocumentsDirectory();
+    final appDir = await syspaths.getApplicationDocumentsDirectory();
     final fileName = path.basename(imageFile.path);
     final savedImage =
         await File(imageFile.path).copy('${appDir.path}/$fileName');
@@ -42,33 +41,35 @@ class _ImageInputState extends State<ImageInput> {
     return Row(
       children: <Widget>[
         Container(
-          width: 170,
-          height: 130,
-          decoration:
-              BoxDecoration(border: Border.all(width: 1, color: Colors.grey)),
-          alignment: Alignment.center,
-          child: _storeImage != null
+          width: 150,
+          height: 100,
+          decoration: BoxDecoration(
+            border: Border.all(width: 1, color: Colors.grey),
+          ),
+          child: _storedImage != null
               ? Image.file(
-                  _storeImage as File,
+                  _storedImage as File,
                   fit: BoxFit.cover,
                   width: double.infinity,
                 )
-              : const Text(
+              : Text(
                   'No Image Taken',
                   textAlign: TextAlign.center,
                 ),
+          alignment: Alignment.center,
         ),
-        const SizedBox(
+        SizedBox(
           width: 10,
         ),
         Expanded(
-            child: TextButton.icon(
-          icon: const Icon(Icons.camera),
-          label: const Text('Take picture'),
-          style: TextButton.styleFrom(
-              textStyle: TextStyle(color: Theme.of(context).primaryColor)),
-          onPressed: _takePicture,
-        )),
+          child: TextButton.icon(
+            style: TextButton.styleFrom(
+                textStyle: TextStyle(color: Theme.of(context).primaryColor)),
+            icon: Icon(Icons.camera),
+            label: Text('Take Picture'),
+            onPressed: _takePicture,
+          ),
+        ),
       ],
     );
   }
